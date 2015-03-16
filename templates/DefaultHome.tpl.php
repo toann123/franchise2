@@ -1,3 +1,4 @@
+@@ -0,0 +1,317 @@
 <?php
 	$this->assign('title','FRANCHISE | Home');
 	$this->assign('nav','home');

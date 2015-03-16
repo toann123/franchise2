@@ -1,5 +1,5 @@
 <?php
-	$this->assign('title','FRANCHISE Secure Example');
+	$this->assign('title','AUTHEXAMPLE Secure Example');
 	$this->assign('nav','secureexample');
 
 	$this->display('_Header.tpl.php');

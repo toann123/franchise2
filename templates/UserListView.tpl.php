@@ -1,12 +1,21 @@
 <?php
-	$this->assign('title','FRANCHISE | Users');
+	$this->assign('title','AUTHEXAMPLE | Users');
 	$this->assign('nav','users');
 
 	$this->display('_Header.tpl.php');
 ?>
 
 <script type="text/javascript">
-	$LAB.script("scripts/app/users.js").wait(function(){
+	$LAB.script("bootstrap/js/bootstrap-datepicker.js")
+	.script("bootstrap/js/bootstrap-timepicker.js")
+	.script("bootstrap/js/bootstrap-combobox.js")
+	.script("scripts/libs/underscore-min.js").wait()
+	.script("scripts/libs/underscore.date.min.js")
+	.script("scripts/libs/backbone-min.js")
+	.script("scripts/app.js")
+	.script("scripts/model.js").wait()
+	.script("scripts/view.js").wait()
+	.script("scripts/app/users.js").wait(function(){
 		$(document).ready(function(){
 			page.init();
 		});
@@ -35,28 +44,20 @@
 		<thead>
 			<tr>
 				<th id="header_Id">Id<% if (page.orderBy == 'Id') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Firstname">Firstname<% if (page.orderBy == 'Firstname') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Lastname">Lastname<% if (page.orderBy == 'Lastname') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Email">Email<% if (page.orderBy == 'Email') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Phone">Phone<% if (page.orderBy == 'Phone') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-<!-- UNCOMMENT TO SHOW ADDITIONAL COLUMNS
-				<th id="header_Mobile">Mobile<% if (page.orderBy == 'Mobile') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Status">Status<% if (page.orderBy == 'Status') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
--->
+				<th id="header_RoleId">Role<% if (page.orderBy == 'RoleId') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Username">Username<% if (page.orderBy == 'Username') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_FirstName">First Name<% if (page.orderBy == 'FirstName') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_LastName">Last Name<% if (page.orderBy == 'LastName') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 			</tr>
 		</thead>
 		<tbody>
 		<% items.each(function(item) { %>
 			<tr id="<%= _.escape(item.get('id')) %>">
 				<td><%= _.escape(item.get('id') || '') %></td>
-				<td><%= _.escape(item.get('firstname') || '') %></td>
-				<td><%= _.escape(item.get('lastname') || '') %></td>
-				<td><%= _.escape(item.get('email') || '') %></td>
-				<td><%= _.escape(item.get('phone') || '') %></td>
-<!-- UNCOMMENT TO SHOW ADDITIONAL COLUMNS
-				<td><%= _.escape(item.get('mobile') || '') %></td>
-				<td><%= _.escape(item.get('status') || '') %></td>
--->
+				<td><%= _.escape(item.get('roleName') || '') %></td>
+				<td><%= _.escape(item.get('username') || '') %></td>
+				<td><%= _.escape(item.get('firstName') || '') %></td>
+				<td><%= _.escape(item.get('lastName') || '') %></td>
 			</tr>
 		<% }); %>
 		</tbody>
@@ -76,45 +77,38 @@
 						<span class="help-inline"></span>
 					</div>
 				</div>
-				<div id="firstnameInputContainer" class="control-group">
-					<label class="control-label" for="firstname">Firstname</label>
+				<div id="roleIdInputContainer" class="control-group">
+					<label class="control-label" for="roleId">Role Id</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="firstname" placeholder="Firstname" value="<%= _.escape(item.get('firstname') || '') %>">
+						<select id="roleId" name="roleId"></select>
 						<span class="help-inline"></span>
 					</div>
 				</div>
-				<div id="lastnameInputContainer" class="control-group">
-					<label class="control-label" for="lastname">Lastname</label>
+				<div id="usernameInputContainer" class="control-group">
+					<label class="control-label" for="username">Username</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="lastname" placeholder="Lastname" value="<%= _.escape(item.get('lastname') || '') %>">
+						<input type="text" class="input-xlarge" id="username" placeholder="Username" value="<%= _.escape(item.get('username') || '') %>">
 						<span class="help-inline"></span>
 					</div>
 				</div>
-				<div id="emailInputContainer" class="control-group">
-					<label class="control-label" for="email">Email</label>
+				<div id="passwordInputContainer" class="control-group">
+					<label class="control-label" for="password">Password</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="email" placeholder="Email" value="<%= _.escape(item.get('email') || '') %>">
+						<input type="text" class="input-xlarge" id="password" placeholder="Password" value="">
 						<span class="help-inline"></span>
 					</div>
 				</div>
-				<div id="phoneInputContainer" class="control-group">
-					<label class="control-label" for="phone">Phone</label>
+				<div id="firstNameInputContainer" class="control-group">
+					<label class="control-label" for="firstName">First Name</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="phone" placeholder="Phone" value="<%= _.escape(item.get('phone') || '') %>">
+						<input type="text" class="input-xlarge" id="firstName" placeholder="First Name" value="<%= _.escape(item.get('firstName') || '') %>">
 						<span class="help-inline"></span>
 					</div>
 				</div>
-				<div id="mobileInputContainer" class="control-group">
-					<label class="control-label" for="mobile">Mobile</label>
+				<div id="lastNameInputContainer" class="control-group">
+					<label class="control-label" for="lastName">Last Name</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="mobile" placeholder="Mobile" value="<%= _.escape(item.get('mobile') || '') %>">
-						<span class="help-inline"></span>
-					</div>
-				</div>
-				<div id="statusInputContainer" class="control-group">
-					<label class="control-label" for="status">Status</label>
-					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="status" placeholder="Status" value="<%= _.escape(item.get('status') || '') %>">
+						<input type="text" class="input-xlarge" id="lastName" placeholder="Last Name" value="<%= _.escape(item.get('lastName') || '') %>">
 						<span class="help-inline"></span>
 					</div>
 				</div>

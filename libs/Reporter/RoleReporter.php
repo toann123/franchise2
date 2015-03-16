@@ -5,7 +5,7 @@
 require_once("verysimple/Phreeze/Reporter.php");
 
 /**
- * This is an example Reporter based on the User object.  The reporter object
+ * This is an example Reporter based on the Role object.  The reporter object
  * allows you to run arbitrary queries that return data which may or may not fith within
  * the data access API.  This can include aggregate data or subsets of data.
  *
@@ -15,19 +15,19 @@ require_once("verysimple/Phreeze/Reporter.php");
  * @author ClassBuilder
  * @version 1.0
  */
-class UserReporter extends Reporter
+class RoleReporter extends Reporter
 {
 
 	// the properties in this class must match the columns returned by GetCustomQuery().
-	// 'CustomFieldExample' is an example that is not part of the `user` table
-	public $RoleName;
+	// 'CustomFieldExample' is an example that is not part of the `role` table
+	public $CustomFieldExample;
 
 	public $Id;
-	public $RoleId;
-	public $Username;
-	public $Password;
-	public $FirstName;
-	public $LastName;
+	public $Name;
+	public $CanAdmin;
+	public $CanEdit;
+	public $CanWrite;
+	public $CanRead;
 
 	/*
 	* GetCustomQuery returns a fully formed SQL statement.  The result columns
@@ -40,16 +40,14 @@ class UserReporter extends Reporter
 	static function GetCustomQuery($criteria)
 	{
 		$sql = "select
-			role.r_name as RoleName
-			,`user`.`a_id` as Id
-			,`user`.`a_role_id` as RoleId
-			,`user`.`a_username` as Username
-			,`user`.`a_password` as Password
-			,`user`.`a_first_name` as FirstName
-			,`user`.`a_last_name` as LastName
-		from `user`
-		inner join role on r_id = a_role_id
-		";
+			'custom value here...' as CustomFieldExample
+			,`role`.`r_id` as Id
+			,`role`.`r_name` as Name
+			,`role`.`r_can_admin` as CanAdmin
+			,`role`.`r_can_edit` as CanEdit
+			,`role`.`r_can_write` as CanWrite
+			,`role`.`r_can_read` as CanRead
+		from `role`";
 
 		// the criteria can be used or you can write your own custom logic.
 		// be sure to escape any user input with $criteria->Escape()
@@ -70,7 +68,7 @@ class UserReporter extends Reporter
 	*/
 	static function GetCustomCountQuery($criteria)
 	{
-		$sql = "select count(1) as counter from `user` inner join role on r_id = a_role_id";
+		$sql = "select count(1) as counter from `role`";
 
 		// the criteria can be used or you can write your own custom logic.
 		// be sure to escape any user input with $criteria->Escape()

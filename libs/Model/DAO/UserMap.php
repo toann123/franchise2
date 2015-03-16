@@ -1,9 +1,8 @@
 <?php
-/** @package    Franchise::Model::DAO */
+/** @package    AuthExample::Model::DAO */
 
 /** import supporting libraries */
 require_once("verysimple/Phreeze/IDaoMap.php");
-require_once("verysimple/Phreeze/IDaoMap2.php");
 
 /**
  * UserMap is a static class with functions used to get FieldMap and KeyMap information that
@@ -15,63 +14,49 @@ require_once("verysimple/Phreeze/IDaoMap2.php");
  * You can override the default fetching strategies for KeyMaps in _config.php.
  * Leaving this file alone will allow easy re-generation of all DAOs in the event of schema changes
  *
- * @package Franchise::Model::DAO
+ * @package AuthExample::Model::DAO
  * @author ClassBuilder
  * @version 1.0
  */
-class UserMap implements IDaoMap, IDaoMap2
+class UserMap implements IDaoMap
 {
-
-	private static $KM;
-	private static $FM;
-	
 	/**
-	 * {@inheritdoc}
-	 */
-	public static function AddMap($property,FieldMap $map)
-	{
-		self::GetFieldMaps();
-		self::$FM[$property] = $map;
-	}
-	
-	/**
-	 * {@inheritdoc}
-	 */
-	public static function SetFetchingStrategy($property,$loadType)
-	{
-		self::GetKeyMaps();
-		self::$KM[$property]->LoadType = $loadType;
-	}
-
-	/**
-	 * {@inheritdoc}
+	 * Returns a singleton array of FieldMaps for the User object
+	 *
+	 * @access public
+	 * @return array of FieldMaps
 	 */
 	public static function GetFieldMaps()
 	{
-		if (self::$FM == null)
+		static $fm = null;
+		if ($fm == null)
 		{
-			self::$FM = Array();
-			self::$FM["Id"] = new FieldMap("Id","user","id",true,FM_TYPE_INT,11,null,true);
-			self::$FM["Firstname"] = new FieldMap("Firstname","user","firstname",false,FM_TYPE_VARCHAR,20,null,false);
-			self::$FM["Lastname"] = new FieldMap("Lastname","user","lastname",false,FM_TYPE_VARCHAR,20,null,false);
-			self::$FM["Email"] = new FieldMap("Email","user","email",false,FM_TYPE_VARCHAR,100,null,false);
-			self::$FM["Phone"] = new FieldMap("Phone","user","phone",false,FM_TYPE_VARCHAR,20,null,false);
-			self::$FM["Mobile"] = new FieldMap("Mobile","user","mobile",false,FM_TYPE_VARCHAR,20,null,false);
-			self::$FM["Status"] = new FieldMap("Status","user","status",false,FM_TYPE_TINYINT,1,null,false);
+			$fm = Array();
+			$fm["Id"] = new FieldMap("Id","user","a_id",true,FM_TYPE_INT,10,null,true);
+			$fm["RoleId"] = new FieldMap("RoleId","user","a_role_id",false,FM_TYPE_INT,10,null,false);
+			$fm["Username"] = new FieldMap("Username","user","a_username",false,FM_TYPE_VARCHAR,150,null,false);
+			$fm["Password"] = new FieldMap("Password","user","a_password",false,FM_TYPE_VARCHAR,150,null,false);
+			$fm["FirstName"] = new FieldMap("FirstName","user","a_first_name",false,FM_TYPE_VARCHAR,45,null,false);
+			$fm["LastName"] = new FieldMap("LastName","user","a_last_name",false,FM_TYPE_VARCHAR,45,null,false);
 		}
-		return self::$FM;
+		return $fm;
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Returns a singleton array of KeyMaps for the User object
+	 *
+	 * @access public
+	 * @return array of KeyMaps
 	 */
 	public static function GetKeyMaps()
 	{
-		if (self::$KM == null)
+		static $km = null;
+		if ($km == null)
 		{
-			self::$KM = Array();
+			$km = Array();
+			$km["u_role"] = new KeyMap("u_role", "RoleId", "Role", "Id", KM_TYPE_MANYTOONE, KM_LOAD_LAZY); // you change to KM_LOAD_EAGER here or (preferrably) make the change in _config.php
 		}
-		return self::$KM;
+		return $km;
 	}
 
 }

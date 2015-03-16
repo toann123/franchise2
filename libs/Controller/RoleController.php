@@ -3,10 +3,10 @@
 
 /** import supporting libraries */
 require_once("AppBaseController.php");
-require_once("Model/User.php");
+require_once("Model/Role.php");
 
 /**
- * UserController is the controller class for the User object.  The
+ * RoleController is the controller class for the Role object.  The
  * controller is responsible for processing input from the user, reading/updating
  * the model as necessary and displaying the appropriate view.
  *
@@ -14,7 +14,7 @@ require_once("Model/User.php");
  * @author ClassBuilder
  * @version 1.0
  */
-class UserController extends AppBaseController
+class RoleController extends AppBaseController
 {
 
 	/**
@@ -29,14 +29,14 @@ class UserController extends AppBaseController
 		// TODO: add controller-wide bootstrap code
 		
 		// DO SOME CUSTOM AUTHENTICATION FOR THIS PAGE
-		$this->RequirePermission(User::$PERMISSION_EDIT,
+		$this->RequirePermission(User::$PERMISSION_ADMIN,
 				'SecureExample.LoginForm',
 				'Please login to access this page',
-				'Edit permission is required to manage users');
+				'Admin permission is required to configure roles');
 	}
 
 	/**
-	 * Displays a list view of User objects
+	 * Displays a list view of Role objects
 	 */
 	public function ListView()
 	{
@@ -44,18 +44,18 @@ class UserController extends AppBaseController
 	}
 
 	/**
-	 * API Method queries for User records and render as JSON
+	 * API Method queries for Role records and render as JSON
 	 */
 	public function Query()
 	{
 		try
 		{
-			$criteria = new UserCriteria();
+			$criteria = new RoleCriteria();
 			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
 			if ($filter) $criteria->AddFilter(
-				new CriteriaFilter('Id,RoleId,Username,Password,FirstName,LastName'
+				new CriteriaFilter('Id,Name,CanAdmin,CanEdit,CanWrite,CanRead'
 				, '%'.$filter.'%')
 			);
 
@@ -90,18 +90,18 @@ class UserController extends AppBaseController
 				// if page is specified, use this instead (at the expense of one extra count query)
 				$pagesize = $this->GetDefaultPageSize();
 
-				$users = $this->Phreezer->Query('UserReporter',$criteria)->GetDataPage($page, $pagesize);
-				$output->rows = $users->ToObjectArray(true,$this->SimpleObjectParams());
-				$output->totalResults = $users->TotalResults;
-				$output->totalPages = $users->TotalPages;
-				$output->pageSize = $users->PageSize;
-				$output->currentPage = $users->CurrentPage;
+				$roles = $this->Phreezer->Query('Role',$criteria)->GetDataPage($page, $pagesize);
+				$output->rows = $roles->ToObjectArray(true,$this->SimpleObjectParams());
+				$output->totalResults = $roles->TotalResults;
+				$output->totalPages = $roles->TotalPages;
+				$output->pageSize = $roles->PageSize;
+				$output->currentPage = $roles->CurrentPage;
 			}
 			else
 			{
 				// return all results
-				$users = $this->Phreezer->Query('UserReporter',$criteria);
-				$output->rows = $users->ToObjectArray(true, $this->SimpleObjectParams());
+				$roles = $this->Phreezer->Query('Role',$criteria);
+				$output->rows = $roles->ToObjectArray(true, $this->SimpleObjectParams());
 				$output->totalResults = count($output->rows);
 				$output->totalPages = 1;
 				$output->pageSize = $output->totalResults;
@@ -118,15 +118,15 @@ class UserController extends AppBaseController
 	}
 
 	/**
-	 * API Method retrieves a single User record and render as JSON
+	 * API Method retrieves a single Role record and render as JSON
 	 */
 	public function Read()
 	{
 		try
 		{
 			$pk = $this->GetRouter()->GetUrlParam('id');
-			$user = $this->Phreezer->Get('User',$pk);
-			$this->RenderJSON($user, $this->JSONPCallback(), true, $this->SimpleObjectParams());
+			$role = $this->Phreezer->Get('Role',$pk);
+			$this->RenderJSON($role, $this->JSONPCallback(), true, $this->SimpleObjectParams());
 		}
 		catch (Exception $ex)
 		{
@@ -135,7 +135,7 @@ class UserController extends AppBaseController
 	}
 
 	/**
-	 * API Method inserts a new User record and render response as JSON
+	 * API Method inserts a new Role record and render response as JSON
 	 */
 	public function Create()
 	{
@@ -149,21 +149,21 @@ class UserController extends AppBaseController
 				throw new Exception('The request body does not contain valid JSON');
 			}
 
-			$user = new User($this->Phreezer);
+			$role = new Role($this->Phreezer);
 
 			// TODO: any fields that should not be inserted by the user should be commented out
 
 			// this is an auto-increment.  uncomment if updating is allowed
-			// $user->Id = $this->SafeGetVal($json, 'id');
+			// $role->Id = $this->SafeGetVal($json, 'id');
 
-			$user->RoleId = $this->SafeGetVal($json, 'roleId');
-			$user->Username = $this->SafeGetVal($json, 'username');
-			$user->Password = $this->SafeGetVal($json, 'password');
-			$user->FirstName = $this->SafeGetVal($json, 'firstName');
-			$user->LastName = $this->SafeGetVal($json, 'lastName');
+			$role->Name = $this->SafeGetVal($json, 'name');
+			$role->CanAdmin = $this->SafeGetVal($json, 'canAdmin');
+			$role->CanEdit = $this->SafeGetVal($json, 'canEdit');
+			$role->CanWrite = $this->SafeGetVal($json, 'canWrite');
+			$role->CanRead = $this->SafeGetVal($json, 'canRead');
 
-			$user->Validate();
-			$errors = $user->GetValidationErrors();
+			$role->Validate();
+			$errors = $role->GetValidationErrors();
 
 			if (count($errors) > 0)
 			{
@@ -171,8 +171,8 @@ class UserController extends AppBaseController
 			}
 			else
 			{
-				$user->Save();
-				$this->RenderJSON($user, $this->JSONPCallback(), true, $this->SimpleObjectParams());
+				$role->Save();
+				$this->RenderJSON($role, $this->JSONPCallback(), true, $this->SimpleObjectParams());
 			}
 
 		}
@@ -183,7 +183,7 @@ class UserController extends AppBaseController
 	}
 
 	/**
-	 * API Method updates an existing User record and render response as JSON
+	 * API Method updates an existing Role record and render response as JSON
 	 */
 	public function Update()
 	{
@@ -198,25 +198,21 @@ class UserController extends AppBaseController
 			}
 
 			$pk = $this->GetRouter()->GetUrlParam('id');
-			$user = $this->Phreezer->Get('User',$pk);
+			$role = $this->Phreezer->Get('Role',$pk);
 
 			// TODO: any fields that should not be updated by the user should be commented out
 
 			// this is a primary key.  uncomment if updating is allowed
-			// $user->Id = $this->SafeGetVal($json, 'id', $user->Id);
+			// $role->Id = $this->SafeGetVal($json, 'id', $role->Id);
 
-			$user->RoleId = $this->SafeGetVal($json, 'roleId', $user->RoleId);
-			$user->Username = $this->SafeGetVal($json, 'username', $user->Username);
-			$user->FirstName = $this->SafeGetVal($json, 'firstName', $user->FirstName);
-			$user->LastName = $this->SafeGetVal($json, 'lastName', $user->LastName);
-			
-			// IF THE PASSWORD IS BLANK THEN WE WANT TO LEAVE IT ALONE BECAUSE WE DON'T
-			// WANT TO ENCRYPT AN EMPTY STRING
-			$pass = $this->SafeGetVal($json, 'password', '');
-			if ($pass) $user->Password = $pass;
+			$role->Name = $this->SafeGetVal($json, 'name', $role->Name);
+			$role->CanAdmin = $this->SafeGetVal($json, 'canAdmin', $role->CanAdmin);
+			$role->CanEdit = $this->SafeGetVal($json, 'canEdit', $role->CanEdit);
+			$role->CanWrite = $this->SafeGetVal($json, 'canWrite', $role->CanWrite);
+			$role->CanRead = $this->SafeGetVal($json, 'canRead', $role->CanRead);
 
-			$user->Validate();
-			$errors = $user->GetValidationErrors();
+			$role->Validate();
+			$errors = $role->GetValidationErrors();
 
 			if (count($errors) > 0)
 			{
@@ -224,8 +220,8 @@ class UserController extends AppBaseController
 			}
 			else
 			{
-				$user->Save();
-				$this->RenderJSON($user, $this->JSONPCallback(), true, $this->SimpleObjectParams());
+				$role->Save();
+				$this->RenderJSON($role, $this->JSONPCallback(), true, $this->SimpleObjectParams());
 			}
 
 
@@ -239,7 +235,7 @@ class UserController extends AppBaseController
 	}
 
 	/**
-	 * API Method deletes an existing User record and render response as JSON
+	 * API Method deletes an existing Role record and render response as JSON
 	 */
 	public function Delete()
 	{
@@ -249,9 +245,9 @@ class UserController extends AppBaseController
 			// TODO: if a soft delete is prefered, change this to update the deleted flag instead of hard-deleting
 
 			$pk = $this->GetRouter()->GetUrlParam('id');
-			$user = $this->Phreezer->Get('User',$pk);
+			$role = $this->Phreezer->Get('Role',$pk);
 
-			$user->Delete();
+			$role->Delete();
 
 			$output = new stdClass();
 

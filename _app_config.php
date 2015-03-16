@@ -50,7 +50,7 @@ set_include_path(
  * Any classes that will be stored in the session can be added here
  * and will be pre-loaded on every page
  */
-require_once "App/ExampleUser.php";
+require_once "Model/User.php";
 
 /**
  * RENDER ENGINE
@@ -79,6 +79,15 @@ GlobalConfig::$ROUTE_MAP = array(
 	'GET:secureuser' => array('route' => 'SecureExample.UserPage'),
 	'GET:secureadmin' => array('route' => 'SecureExample.AdminPage'),
 	'GET:logout' => array('route' => 'SecureExample.Logout'),
+
+	// Role
+	'GET:roles' => array('route' => 'Role.ListView'),
+	'GET:role/(:num)' => array('route' => 'Role.SingleView', 'params' => array('id' => 1)),
+	'GET:api/roles' => array('route' => 'Role.Query'),
+	'POST:api/role' => array('route' => 'Role.Create'),
+	'GET:api/role/(:num)' => array('route' => 'Role.Read', 'params' => array('id' => 2)),
+	'PUT:api/role/(:num)' => array('route' => 'Role.Update', 'params' => array('id' => 2)),
+	'DELETE:api/role/(:num)' => array('route' => 'Role.Delete', 'params' => array('id' => 2)),
 		
 	// Account
 	'GET:accounts' => array('route' => 'Account.ListView'),

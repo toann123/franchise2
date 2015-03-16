@@ -1,19 +1,19 @@
 <?php
-/** @package    Franchise::Model */
+/** @package    AuthExample::Model */
 
 /** import supporting libraries */
-require_once("DAO/UserDAO.php");
-require_once("UserCriteria.php");
+require_once("DAO/RoleDAO.php");
+require_once("RoleCriteria.php");
 
 /**
- * The User class extends UserDAO which provides the access
+ * The Role class extends RoleDAO which provides the access
  * to the datastore.
  *
- * @package Franchise::Model
+ * @package AuthExample::Model
  * @author ClassBuilder
  * @version 1.0
  */
-class User extends UserDAO
+class Role extends RoleDAO
 {
 
 	/**
@@ -39,7 +39,7 @@ class User extends UserDAO
 		// the controller create/update methods validate before saving.  this will be a
 		// redundant validation check, however it will ensure data integrity at the model
 		// level based on validation rules.  comment this line out if this is not desired
-		if (!$this->Validate()) throw new Exception('Unable to Save User: ' .  implode(', ', $this->GetValidationErrors()));
+		if (!$this->Validate()) throw new Exception('Unable to Save Role: ' .  implode(', ', $this->GetValidationErrors()));
 
 		// OnSave must return true or eles Phreeze will cancel the save operation
 		return true;

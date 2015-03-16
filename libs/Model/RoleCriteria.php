@@ -2,10 +2,10 @@
 /** @package    AuthExample::Model */
 
 /** import supporting libraries */
-require_once("DAO/UserCriteriaDAO.php");
+require_once("DAO/RoleCriteriaDAO.php");
 
 /**
- * The UserCriteria class extends UserDAOCriteria and is used
+ * The RoleCriteria class extends RoleDAOCriteria and is used
  * to query the database for objects and collections
  * 
  * @inheritdocs
@@ -13,7 +13,7 @@ require_once("DAO/UserCriteriaDAO.php");
  * @author ClassBuilder
  * @version 1.0
  */
-class UserCriteria extends UserCriteriaDAO
+class RoleCriteria extends RoleCriteriaDAO
 {
 	
 	/**

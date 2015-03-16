@@ -118,6 +118,19 @@
 								</ul>
 								</li>
 							</ul>
+							<?php  if ($this->CURRENT_USER) { ?>
+							<ul class="nav pull-right">
+								<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-lock"></i> Hello <?php $this->eprint($this->CURRENT_USER->FirstName); ?> <i class="caret"></i></a>
+								<ul class="dropdown-menu">
+									<li><a href="./logout">Logout</a></li>
+									<li class="divider"></li>
+									<li><a href="./secureuser">Example User Page <i class="icon-lock"></i></a></li>
+									<li><a href="./secureadmin">Example Admin Page <i class="icon-lock"></i></a></li>
+								</ul>
+								</li>
+							</ul>
+							<?php } else { ?>
 							<ul class="nav pull-right">
 								<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-lock"></i> Login <i class="caret"></i></a>
@@ -129,6 +142,7 @@
 								</ul>
 								</li>
 							</ul>
+							<?php } ?>
 						</div><!--/.nav-collapse -->
 					</div>
 				</div>

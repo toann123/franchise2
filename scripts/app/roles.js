@@ -1,15 +1,15 @@
 /**
- * View logic for Users
+ * View logic for Roles
  */
 
 /**
- * application logic specific to the User listing page
+ * application logic specific to the Role listing page
  */
 var page = {
 
-	users: new model.UserCollection(),
+	roles: new model.RoleCollection(),
 	collectionView: null,
-	user: null,
+	role: null,
 	modelView: null,
 	isInitialized: false,
 	isInitializing: false,
@@ -30,40 +30,40 @@ var page = {
 		if (!$.isReady && console) console.warn('page was initialized before dom is ready.  views may not render properly.');
 
 		// make the new button clickable
-		$("#newUserButton").click(function(e) {
+		$("#newRoleButton").click(function(e) {
 			e.preventDefault();
 			page.showDetailDialog();
 		});
 
 		// let the page know when the dialog is open
-		$('#userDetailDialog').on('show',function(){
+		$('#roleDetailDialog').on('show',function(){
 			page.dialogIsOpen = true;
 		});
 
 		// when the model dialog is closed, let page know and reset the model view
-		$('#userDetailDialog').on('hidden',function(){
+		$('#roleDetailDialog').on('hidden',function(){
 			$('#modelAlert').html('');
 			page.dialogIsOpen = false;
 		});
 
 		// save the model when the save button is clicked
-		$("#saveUserButton").click(function(e) {
+		$("#saveRoleButton").click(function(e) {
 			e.preventDefault();
 			page.updateModel();
 		});
 
 		// initialize the collection view
 		this.collectionView = new view.CollectionView({
-			el: $("#userCollectionContainer"),
-			templateEl: $("#userCollectionTemplate"),
-			collection: page.users
+			el: $("#roleCollectionContainer"),
+			templateEl: $("#roleCollectionTemplate"),
+			collection: page.roles
 		});
 
 		// initialize the search filter
 		$('#filter').change(function(obj){
 			page.fetchParams.filter = $('#filter').val();
 			page.fetchParams.page = 1;
-			page.fetchUsers(page.fetchParams);
+			page.fetchRoles(page.fetchParams);
 		});
 		
 		// make the rows clickable ('rendered' is a custom event, not a standard backbone event)
@@ -72,7 +72,7 @@ var page = {
 			// attach click handler to the table rows for editing
 			$('table.collection tbody tr').click(function(e) {
 				e.preventDefault();
-				var m = page.users.get(this.id);
+				var m = page.roles.get(this.id);
 				page.showDetailDialog(m);
 			});
 
@@ -85,14 +85,14 @@ var page = {
 				page.fetchParams.orderDesc = (prop == page.fetchParams.orderBy && !page.fetchParams.orderDesc) ? '1' : '';
 				page.fetchParams.orderBy = prop;
 				page.fetchParams.page = 1;
- 				page.fetchUsers(page.fetchParams);
+ 				page.fetchRoles(page.fetchParams);
  			});
 
 			// attach click handlers to the pagination controls
 			$('.pageButton').click(function(e) {
 				e.preventDefault();
 				page.fetchParams.page = this.id.substr(5);
-				page.fetchUsers(page.fetchParams);
+				page.fetchRoles(page.fetchParams);
 			});
 			
 			page.isInitialized = true;
@@ -100,15 +100,15 @@ var page = {
 		});
 
 		// backbone docs recommend bootstrapping data on initial page load, but we live by our own rules!
-		this.fetchUsers({ page: 1 });
+		this.fetchRoles({ page: 1 });
 
 		// initialize the model view
 		this.modelView = new view.ModelView({
-			el: $("#userModelContainer")
+			el: $("#roleModelContainer")
 		});
 
 		// tell the model view where it's template is located
-		this.modelView.templateEl = $("#userModelTemplate");
+		this.modelView.templateEl = $("#roleModelTemplate");
 
 		if (model.longPollDuration > 0)
 		{
@@ -116,7 +116,7 @@ var page = {
 
 				if (!page.dialogIsOpen)
 				{
-					page.fetchUsers(page.fetchParams,true);
+					page.fetchRoles(page.fetchParams,true);
 				}
 
 			}, model.longPollDuration);
@@ -128,7 +128,7 @@ var page = {
 	 * @param object params passed through to collection.fetch
 	 * @param bool true to hide the loading animation
 	 */
-	fetchUsers: function(params, hideLoader)
+	fetchRoles: function(params, hideLoader)
 	{
 		// persist the params so that paging/sorting/filtering will play together nicely
 		page.fetchParams = params;
@@ -142,13 +142,13 @@ var page = {
 
 		if (!hideLoader) app.showProgress('loader');;
 
-		page.users.fetch({
+		page.roles.fetch({
 
 			data: params,
 
 			success: function() {
 
-				if (page.users.collectionHasChanged)
+				if (page.roles.collectionHasChanged)
 				{
 					// data returned from the server.  render the collection view
 					page.collectionView.render();
@@ -174,15 +174,15 @@ var page = {
 	showDetailDialog: function(m) {
 
 		// show the modal dialog
-		$('#userDetailDialog').modal({ show: true });
+		$('#roleDetailDialog').modal({ show: true });
 
 		// if a model was specified then that means a user is editing an existing record
 		// if not, then the user is creating a new record
-		page.user = m ? m : new model.UserModel();
+		page.role = m ? m : new model.RoleModel();
 
-		page.modelView.model = page.user;
+		page.modelView.model = page.role;
 
-		if (page.user.id == null || page.user.id == '')
+		if (page.role.id == null || page.role.id == '')
 		{
 			// this is a new record, there is no need to contact the server
 			page.renderModelView(false);
@@ -192,7 +192,7 @@ var page = {
 			app.showProgress('modelLoader');
 
 			// fetch the model from the server so we are not updating stale data
-			page.user.fetch({
+			page.role.fetch({
 
 				success: function() {
 					// data returned from the server.  render the model view
@@ -233,50 +233,22 @@ var page = {
 		
 		$('.timepicker-default').timepicker({ defaultTime: 'value' });
 
-		// populate the dropdown options for roleId
-		// TODO: load only the selected value, then fetch all options when the drop-down is clicked
-		var roleIdValues = new model.RoleCollection();
-		roleIdValues.fetch({
-			success: function(c){
-				var dd = $('#roleId');
-				dd.append('<option value=""></option>');
-				c.forEach(function(item,index)
-				{
-					dd.append(app.getOptionHtml(
-						item.get('id'),
-						item.get('name'), // TODO: change fieldname if the dropdown doesn't show the desired column
-						page.user.get('roleId') == item.get('id')
-					));
-				});
-				
-				if (!app.browserSucks())
-				{
-					dd.combobox();
-					$('div.combobox-container + span.help-inline').hide(); // TODO: hack because combobox is making the inline help div have a height
-				}
-
-			},
-			error: function(collection,response,scope){
-				app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
-			}
-		});
-
 
 		if (showDeleteButton)
 		{
 			// attach click handlers to the delete buttons
 
-			$('#deleteUserButton').click(function(e) {
+			$('#deleteRoleButton').click(function(e) {
 				e.preventDefault();
-				$('#confirmDeleteUserContainer').show('fast');
+				$('#confirmDeleteRoleContainer').show('fast');
 			});
 
-			$('#cancelDeleteUserButton').click(function(e) {
+			$('#cancelDeleteRoleButton').click(function(e) {
 				e.preventDefault();
-				$('#confirmDeleteUserContainer').hide('fast');
+				$('#confirmDeleteRoleContainer').hide('fast');
 			});
 
-			$('#confirmDeleteUserButton').click(function(e) {
+			$('#confirmDeleteRoleButton').click(function(e) {
 				e.preventDefault();
 				page.deleteModel();
 			});
@@ -285,7 +257,7 @@ var page = {
 		else
 		{
 			// no point in initializing the click handlers if we don't show the button
-			$('#deleteUserButtonContainer').hide();
+			$('#deleteRoleButtonContainer').hide();
 		}
 	},
 
@@ -300,31 +272,33 @@ var page = {
 		$('.help-inline').html('');
 
 		// if this is new then on success we need to add it to the collection
-		var isNew = page.user.isNew();
+		var isNew = page.role.isNew();
 
 		app.showProgress('modelLoader');
 
-		page.user.save({
+		page.role.save({
 
-			'roleId': $('select#roleId').val(),
-			'username': $('input#username').val(),
-			'password': $('input#password').val(),
-			'firstName': $('input#firstName').val(),
-			'lastName': $('input#lastName').val()
+			'name': $('input#name').val(),
+			
+			// ADJUST THIS A LITTLE BIT TO DEAL WITH CHECKBOXES
+			'canAdmin': $('input#canAdmin').is(':checked') ? '1' : '0',
+			'canEdit': $('input#canEdit').is(':checked') ? '1' : '0',
+			'canWrite': $('input#canWrite').is(':checked') ? '1' : '0',
+			'canRead': $('input#canRead').is(':checked') ? '1' : '0',
 		}, {
 			wait: true,
 			success: function(){
-				$('#userDetailDialog').modal('hide');
-				setTimeout("app.appendAlert('User was sucessfully " + (isNew ? "inserted" : "updated") + "','alert-success',3000,'collectionAlert')",500);
+				$('#roleDetailDialog').modal('hide');
+				setTimeout("app.appendAlert('Role was sucessfully " + (isNew ? "inserted" : "updated") + "','alert-success',3000,'collectionAlert')",500);
 				app.hideProgress('modelLoader');
 
 				// if the collection was initally new then we need to add it to the collection now
-				if (isNew) { page.users.add(page.user) }
+				if (isNew) { page.roles.add(page.role) }
 
 				if (model.reloadCollectionOnModelUpdate)
 				{
 					// re-fetch and render the collection after the model has been updated
-					page.fetchUsers(page.fetchParams,true);
+					page.fetchRoles(page.fetchParams,true);
 				}
 		},
 			error: function(model,response,scope){
@@ -361,17 +335,17 @@ var page = {
 
 		app.showProgress('modelLoader');
 
-		page.user.destroy({
+		page.role.destroy({
 			wait: true,
 			success: function(){
-				$('#userDetailDialog').modal('hide');
-				setTimeout("app.appendAlert('The User record was deleted','alert-success',3000,'collectionAlert')",500);
+				$('#roleDetailDialog').modal('hide');
+				setTimeout("app.appendAlert('The Role record was deleted','alert-success',3000,'collectionAlert')",500);
 				app.hideProgress('modelLoader');
 
 				if (model.reloadCollectionOnModelUpdate)
 				{
 					// re-fetch and render the collection after the model has been updated
-					page.fetchUsers(page.fetchParams,true);
+					page.fetchRoles(page.fetchParams,true);
 				}
 			},
 			error: function(model,response,scope){

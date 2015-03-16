@@ -1,5 +1,5 @@
 <?php
-/** @package    FRANCHISE::Controller */
+/** @package    AUTHEXAMPLE::Controller */
 
 /** import supporting libraries */
 require_once("verysimple/Phreeze/Controller.php");
@@ -10,7 +10,7 @@ require_once("verysimple/Phreeze/Controller.php");
  * class or any code, however you may use if for application-wide
  * functions such as authentication
  *
- * @package FRANCHISE::Controller
+ * @package AUTHEXAMPLE::Controller
  * @author ClassBuilder
  * @version 1.0
  */

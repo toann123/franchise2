@@ -1,5 +1,5 @@
 <?php
-	$this->assign('title','FRANCHISE | File Not Found');
+	$this->assign('title','AUTHEXAMPLE | File Not Found');
 	$this->assign('nav','home');
 
 	$this->display('_Header.tpl.php');

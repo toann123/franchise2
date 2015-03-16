@@ -1,5 +1,5 @@
 <?php
-/** @package    Franchise::Model::DAO */
+/** @package    AuthExample::Model::DAO */
 
 /** import supporting libraries */
 require_once("verysimple/Phreeze/Criteria.php");
@@ -14,7 +14,7 @@ require_once("verysimple/Phreeze/Criteria.php");
  * Leaving this file alone will allow easy re-generation of all DAOs in the event of schema changes
  *
  * @inheritdocs
- * @package Franchise::Model::DAO
+ * @package AuthExample::Model::DAO
  * @author ClassBuilder
  * @version 1.0
  */
@@ -26,7 +26,7 @@ class UserCriteriaDAO extends Criteria
 	public $Id_IsLike;
 	public $Id_IsNotLike;
 	public $Id_BeginsWith;
-	public $Id_EndsWith;
+	public $Id_EndWith;
 	public $Id_GreaterThan;
 	public $Id_GreaterThanOrEqual;
 	public $Id_LessThan;
@@ -36,96 +36,81 @@ class UserCriteriaDAO extends Criteria
 	public $Id_IsEmpty;
 	public $Id_BitwiseOr;
 	public $Id_BitwiseAnd;
-	public $Firstname_Equals;
-	public $Firstname_NotEquals;
-	public $Firstname_IsLike;
-	public $Firstname_IsNotLike;
-	public $Firstname_BeginsWith;
-	public $Firstname_EndsWith;
-	public $Firstname_GreaterThan;
-	public $Firstname_GreaterThanOrEqual;
-	public $Firstname_LessThan;
-	public $Firstname_LessThanOrEqual;
-	public $Firstname_In;
-	public $Firstname_IsNotEmpty;
-	public $Firstname_IsEmpty;
-	public $Firstname_BitwiseOr;
-	public $Firstname_BitwiseAnd;
-	public $Lastname_Equals;
-	public $Lastname_NotEquals;
-	public $Lastname_IsLike;
-	public $Lastname_IsNotLike;
-	public $Lastname_BeginsWith;
-	public $Lastname_EndsWith;
-	public $Lastname_GreaterThan;
-	public $Lastname_GreaterThanOrEqual;
-	public $Lastname_LessThan;
-	public $Lastname_LessThanOrEqual;
-	public $Lastname_In;
-	public $Lastname_IsNotEmpty;
-	public $Lastname_IsEmpty;
-	public $Lastname_BitwiseOr;
-	public $Lastname_BitwiseAnd;
-	public $Email_Equals;
-	public $Email_NotEquals;
-	public $Email_IsLike;
-	public $Email_IsNotLike;
-	public $Email_BeginsWith;
-	public $Email_EndsWith;
-	public $Email_GreaterThan;
-	public $Email_GreaterThanOrEqual;
-	public $Email_LessThan;
-	public $Email_LessThanOrEqual;
-	public $Email_In;
-	public $Email_IsNotEmpty;
-	public $Email_IsEmpty;
-	public $Email_BitwiseOr;
-	public $Email_BitwiseAnd;
-	public $Phone_Equals;
-	public $Phone_NotEquals;
-	public $Phone_IsLike;
-	public $Phone_IsNotLike;
-	public $Phone_BeginsWith;
-	public $Phone_EndsWith;
-	public $Phone_GreaterThan;
-	public $Phone_GreaterThanOrEqual;
-	public $Phone_LessThan;
-	public $Phone_LessThanOrEqual;
-	public $Phone_In;
-	public $Phone_IsNotEmpty;
-	public $Phone_IsEmpty;
-	public $Phone_BitwiseOr;
-	public $Phone_BitwiseAnd;
-	public $Mobile_Equals;
-	public $Mobile_NotEquals;
-	public $Mobile_IsLike;
-	public $Mobile_IsNotLike;
-	public $Mobile_BeginsWith;
-	public $Mobile_EndsWith;
-	public $Mobile_GreaterThan;
-	public $Mobile_GreaterThanOrEqual;
-	public $Mobile_LessThan;
-	public $Mobile_LessThanOrEqual;
-	public $Mobile_In;
-	public $Mobile_IsNotEmpty;
-	public $Mobile_IsEmpty;
-	public $Mobile_BitwiseOr;
-	public $Mobile_BitwiseAnd;
-	public $Status_Equals;
-	public $Status_NotEquals;
-	public $Status_IsLike;
-	public $Status_IsNotLike;
-	public $Status_BeginsWith;
-	public $Status_EndsWith;
-	public $Status_GreaterThan;
-	public $Status_GreaterThanOrEqual;
-	public $Status_LessThan;
-	public $Status_LessThanOrEqual;
-	public $Status_In;
-	public $Status_IsNotEmpty;
-	public $Status_IsEmpty;
-	public $Status_BitwiseOr;
-	public $Status_BitwiseAnd;
+	public $RoleId_Equals;
+	public $RoleId_NotEquals;
+	public $RoleId_IsLike;
+	public $RoleId_IsNotLike;
+	public $RoleId_BeginsWith;
+	public $RoleId_EndWith;
+	public $RoleId_GreaterThan;
+	public $RoleId_GreaterThanOrEqual;
+	public $RoleId_LessThan;
+	public $RoleId_LessThanOrEqual;
+	public $RoleId_In;
+	public $RoleId_IsNotEmpty;
+	public $RoleId_IsEmpty;
+	public $RoleId_BitwiseOr;
+	public $RoleId_BitwiseAnd;
+	public $Username_Equals;
+	public $Username_NotEquals;
+	public $Username_IsLike;
+	public $Username_IsNotLike;
+	public $Username_BeginsWith;
+	public $Username_EndWith;
+	public $Username_GreaterThan;
+	public $Username_GreaterThanOrEqual;
+	public $Username_LessThan;
+	public $Username_LessThanOrEqual;
+	public $Username_In;
+	public $Username_IsNotEmpty;
+	public $Username_IsEmpty;
+	public $Username_BitwiseOr;
+	public $Username_BitwiseAnd;
+	public $Password_Equals;
+	public $Password_NotEquals;
+	public $Password_IsLike;
+	public $Password_IsNotLike;
+	public $Password_BeginsWith;
+	public $Password_EndWith;
+	public $Password_GreaterThan;
+	public $Password_GreaterThanOrEqual;
+	public $Password_LessThan;
+	public $Password_LessThanOrEqual;
+	public $Password_In;
+	public $Password_IsNotEmpty;
+	public $Password_IsEmpty;
+	public $Password_BitwiseOr;
+	public $Password_BitwiseAnd;
+	public $FirstName_Equals;
+	public $FirstName_NotEquals;
+	public $FirstName_IsLike;
+	public $FirstName_IsNotLike;
+	public $FirstName_BeginsWith;
+	public $FirstName_EndWith;
+	public $FirstName_GreaterThan;
+	public $FirstName_GreaterThanOrEqual;
+	public $FirstName_LessThan;
+	public $FirstName_LessThanOrEqual;
+	public $FirstName_In;
+	public $FirstName_IsNotEmpty;
+	public $FirstName_IsEmpty;
+	public $FirstName_BitwiseOr;
+	public $FirstName_BitwiseAnd;
+	public $LastName_Equals;
+	public $LastName_NotEquals;
+	public $LastName_IsLike;
+	public $LastName_IsNotLike;
+	public $LastName_BeginsWith;
+	public $LastName_EndWith;
+	public $LastName_GreaterThan;
+	public $LastName_GreaterThanOrEqual;
+	public $LastName_LessThan;
+	public $LastName_LessThanOrEqual;
+	public $LastName_In;
+	public $LastName_IsNotEmpty;
+	public $LastName_IsEmpty;
+	public $LastName_BitwiseOr;
+	public $LastName_BitwiseAnd;
 
 }
 
