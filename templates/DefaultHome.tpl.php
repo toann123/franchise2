@@ -1,4 +1,3 @@
-@@ -0,0 +1,317 @@
 <?php
 	$this->assign('title','FRANCHISE | Home');
 	$this->assign('nav','home');
@@ -21,7 +20,7 @@
 
 <div class="fluid-container">
 
-
+<!-- <?php var_dump($this->companyinfo);?> -->
 	<!-- underscore template for the model -->
 	<script type="text/template" id="supportModelTemplate">
 		<form class="form-horizontal" onsubmit="return false;">
@@ -174,34 +173,16 @@
                             Code
                         </div>
                         <div class="span9">
-                            TN6
+                            <?php echo($this->companyinfo[0]->companyCode);?>
                         </div>
                         <div class="clear"></div>
-                    </div>
-                    <div class="row-form">
-                        <div class="span3">
-                            Territory
-                        </div>
-                        <div class="span9">
-                            Jim's Cleaning
-                        </div>
-                        <div class="clear"></div>
-                    </div>
-                    <div class="row-form">
-                        <div class="span3">
-                            Region
-                        </div>
-                        <div class="span9">
-                            Jim's Cleaning
-                        </div>
-                        <div class="clear"></div>
-                    </div>
+                    </div>                  
                     <div class="row-form">
                         <div class="span3">
                             Started
                         </div>
                         <div class="span9">
-                            21-02-2015
+                            <?php echo($this->companyinfo[0]->start);?>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -210,7 +191,7 @@
                             Status
                         </div>
                         <div class="span9">
-                            OK
+                            <?php if($this->companyinfo[0]->companyStatus == "1") echo("Ok");?>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -228,7 +209,7 @@
                             Name
                         </div>
                         <div class="span9">
-                            Mr Michael Nguyen
+                             <?php echo($this->userinfo->FirstName ." ".$this->userinfo->LastName);?>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -237,7 +218,7 @@
                             Mobile
                         </div>
                         <div class="span9">
-                            04500336606
+                            <?php echo($this->userinfo->Mobile);?>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -246,7 +227,7 @@
                             Email
                         </div>
                         <div class="span9">
-                            michale.nguyen@jimcleaning.net.au
+                            <?php echo($this->userinfo->Email);?>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -255,7 +236,7 @@
                             Address
                         </div>
                         <div class="span9">
-                            39 Fisher St 3012 VIC
+                             <?php echo($this->userinfo->Address.", ".$this->userinfo->Surburb.", ".$this->userinfo->State." ".$this->userinfo->Postcode.", ".$this->userinfo->City);?>
                         </div>
                         <div class="clear"></div>
                     </div>

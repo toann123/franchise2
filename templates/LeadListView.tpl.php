@@ -108,13 +108,6 @@
 						<span class="help-inline"></span>
 					</div>
 				</div>
-				<div id="accountTypeIdInputContainer" class="control-group">
-					<label class="control-label" for="accountTypeId">Account Type Id</label>
-					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="accountTypeId" placeholder="Account Type Id" value="<%= _.escape(item.get('accountTypeId') || '') %>">
-						<span class="help-inline"></span>
-					</div>
-				</div>
 				<div id="createdDateInputContainer" class="control-group">
 					<label class="control-label" for="createdDate">Created Date</label>
 					<div class="controls inline-inputs">
@@ -171,7 +164,7 @@
 	</script>
 
 	<!-- modal edit dialog -->
-	<div class="modal hide fade" id="leadDetailDialog">
+	<div class="modal fade" id="leadDetailDialog">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">&times;</a>
 			<h3>

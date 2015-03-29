@@ -37,8 +37,7 @@ class StateReporter extends Reporter
 	static function GetCustomQuery($criteria)
 	{
 		$sql = "select
-			'custom value here...' as CustomFieldExample
-			,`state`.`id` as Id
+			`state`.`id` as Id
 			,`state`.`name` as Name
 			,`state`.`code` as Code
 		from `state`";

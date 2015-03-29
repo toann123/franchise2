@@ -1,5 +1,5 @@
 <?php
-/** @package AuthExample::Model::DAO */
+/** @package Franchise::Model::DAO */
 
 /** import supporting libraries */
 require_once("verysimple/Phreeze/Phreezable.php");
@@ -15,7 +15,7 @@ require_once("UserMap.php");
  * Add any custom business logic to the Model class which is extended from this DAO class.
  * Leaving this file alone will allow easy re-generation of all DAOs in the event of schema changes
  *
- * @package AuthExample::Model::DAO
+ * @package Franchise::Model::DAO
  * @author ClassBuilder
  * @version 1.0
  */
@@ -23,6 +23,9 @@ class UserDAO extends Phreezable
 {
 	/** @var int */
 	public $Id;
+
+	/** @var string */
+	public $Code;
 
 	/** @var int */
 	public $RoleId;
@@ -39,12 +42,51 @@ class UserDAO extends Phreezable
 	/** @var string */
 	public $LastName;
 
+	/** @var int */
+	public $AccountTypeId;
+
+	/** @var int */
+	public $CompanyId;
+
+	/** @var string */
+	public $Email;
+
+	/** @var string */
+	public $Phone;
+
+	/** @var string */
+	public $Mobile;
+
+	/** @var string */
+	public $Address;
+
+	/** @var string */
+	public $Surburb;
+
+	/** @var int */
+	public $Postcode;
+
+	/** @var string */
+	public $State;
+
+	/** @var string */
+	public $City;
+
+	/** @var timestamp */
+	public $CreatedDate;
+
+	/** @var timestamp */
+	public $UpdatedDate;
+
+	/** @var int */
+	public $Status;
+
 
 	/**
-	 * Returns the foreign object based on the value of RoleId
+	 * Returns the foreign object based on the value of ARoleId
 	 * @return Role
 	 */
-	public function GetRole()
+	public function GetARole()
 	{
 		return $this->_phreezer->GetManyToOne($this, "u_role");
 	}

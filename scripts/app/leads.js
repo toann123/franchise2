@@ -7,26 +7,35 @@
  */
 var page = {
 
-	leads: new model.LeadCollection(),
-	collectionView: null,
-	lead: null,
-	modelView: null,
-	isInitialized: false,
-	isInitializing: false,
+	leads : new model.LeadCollection(),
+	customers : new model.CustomerCollection(),
+	collectionView : null,
+	customer : null,
+	lead : null,
+	modelView : null,
+	isInitialized : false,
+	isInitializing : false,
 
-	fetchParams: { filter: '', orderBy: '', orderDesc: '', page: 1 },
-	fetchInProgress: false,
-	dialogIsOpen: false,
+	fetchParams : {
+		filter : '',
+		orderBy : '',
+		orderDesc : '',
+		page : 1
+	},
+	fetchInProgress : false,
+	dialogIsOpen : false,
 
 	/**
 	 *
 	 */
-	init: function() {
+	init : function() {
 		// ensure initialization only occurs once
-		if (page.isInitialized || page.isInitializing) return;
+		if (page.isInitialized || page.isInitializing)
+			return;
 		page.isInitializing = true;
 
-		if (!$.isReady && console) console.warn('page was initialized before dom is ready.  views may not render properly.');
+		if (!$.isReady && console)
+			console.warn('page was initialized before dom is ready.  views may not render properly.');
 
 		// make the new button clickable
 		$("#newLeadButton").click(function(e) {
@@ -35,12 +44,12 @@ var page = {
 		});
 
 		// let the page know when the dialog is open
-		$('#leadDetailDialog').on('show',function() {
+		$('#leadDetailDialog').on('show', function() {
 			page.dialogIsOpen = true;
 		});
 
 		// when the model dialog is closed, let page know and reset the model view
-		$('#leadDetailDialog').on('hidden',function() {
+		$('#leadDetailDialog').on('hidden', function() {
 			$('#modelAlert').html('');
 			page.dialogIsOpen = false;
 		});
@@ -53,9 +62,9 @@ var page = {
 
 		// initialize the collection view
 		this.collectionView = new view.CollectionView({
-			el: $("#leadCollectionContainer"),
-			templateEl: $("#leadCollectionTemplate"),
-			collection: page.leads
+			el : $("#leadCollectionContainer"),
+			templateEl : $("#leadCollectionTemplate"),
+			collection : page.leads
 		});
 
 		// initialize the search filter
@@ -64,9 +73,9 @@ var page = {
 			page.fetchParams.page = 1;
 			page.fetchLeads(page.fetchParams);
 		});
-		
+
 		// make the rows clickable ('rendered' is a custom event, not a standard backbone event)
-		this.collectionView.on('rendered',function(){
+		this.collectionView.on('rendered', function() {
 
 			// attach click handler to the table rows for editing
 			$('table.collection tbody tr').click(function(e) {
@@ -76,16 +85,16 @@ var page = {
 			});
 
 			// make the headers clickable for sorting
- 			$('table.collection thead tr th').click(function(e) {
- 				e.preventDefault();
-				var prop = this.id.replace('header_','');
+			$('table.collection thead tr th').click(function(e) {
+				e.preventDefault();
+				var prop = this.id.replace('header_', '');
 
 				// toggle the ascending/descending before we change the sort prop
 				page.fetchParams.orderDesc = (prop == page.fetchParams.orderBy && !page.fetchParams.orderDesc) ? '1' : '';
 				page.fetchParams.orderBy = prop;
 				page.fetchParams.page = 1;
- 				page.fetchLeads(page.fetchParams);
- 			});
+				page.fetchLeads(page.fetchParams);
+			});
 
 			// attach click handlers to the pagination controls
 			$('.pageButton').click(function(e) {
@@ -93,31 +102,38 @@ var page = {
 				page.fetchParams.page = this.id.substr(5);
 				page.fetchLeads(page.fetchParams);
 			});
-			
+
 			page.isInitialized = true;
 			page.isInitializing = false;
 		});
 
 		// backbone docs recommend bootstrapping data on initial page load, but we live by our own rules!
-		this.fetchLeads({ page: 1 });
+		this.fetchLeads({
+			page : 1
+		});
 
 		// initialize the model view
 		this.modelView = new view.ModelView({
-			el: $("#leadModelContainer")
+			el : $("#leadModelContainer")
 		});
 
 		// tell the model view where it's template is located
 		this.modelView.templateEl = $("#leadModelTemplate");
 
-		if (model.longPollDuration > 0)	{
-			setInterval(function () {
+		if (model.longPollDuration > 0) {
+			setInterval(function() {
 
-				if (!page.dialogIsOpen)	{
-					page.fetchLeads(page.fetchParams,true);
+				if (!page.dialogIsOpen) {
+					page.fetchLeads(page.fetchParams, true);
 				}
 
 			}, model.longPollDuration);
 		}
+
+		//init gui
+		setTimeout(function() {
+			page.showDetailDialog();
+		}, 300);
 	},
 
 	/**
@@ -125,23 +141,25 @@ var page = {
 	 * @param object params passed through to collection.fetch
 	 * @param bool true to hide the loading animation
 	 */
-	fetchLeads: function(params, hideLoader) {
+	fetchLeads : function(params, hideLoader) {
 		// persist the params so that paging/sorting/filtering will play together nicely
 		page.fetchParams = params;
 
 		if (page.fetchInProgress) {
-			if (console) console.log('supressing fetch because it is already in progress');
+			if (console)
+				console.log('supressing fetch because it is already in progress');
 		}
 
 		page.fetchInProgress = true;
 
-		if (!hideLoader) app.showProgress('loader');
+		if (!hideLoader)
+			app.showProgress('loader');
 
 		page.leads.fetch({
 
-			data: params,
+			data : params,
 
-			success: function() {
+			success : function() {
 
 				if (page.leads.collectionHasChanged) {
 					// TODO: add any logic necessary if the collection has changed
@@ -152,12 +170,11 @@ var page = {
 				page.fetchInProgress = false;
 			},
 
-			error: function(m, r) {
-				app.appendAlert(app.getErrorMessage(r), 'alert-error',0,'collectionAlert');
+			error : function(m, r) {
+				app.appendAlert(app.getErrorMessage(r), 'alert-error', 0, 'collectionAlert');
 				app.hideProgress('loader');
 				page.fetchInProgress = false;
 			}
-
 		});
 	},
 
@@ -165,10 +182,12 @@ var page = {
 	 * show the dialog for editing a model
 	 * @param model
 	 */
-	showDetailDialog: function(m) {
+	showDetailDialog : function(m) {
 
 		// show the modal dialog
-		$('#leadDetailDialog').modal({ show: true });
+		$('#leadDetailDialog').modal({
+			show : true
+		});
 
 		// if a model was specified then that means a user is editing an existing record
 		// if not, then the user is creating a new record
@@ -185,16 +204,15 @@ var page = {
 			// fetch the model from the server so we are not updating stale data
 			page.lead.fetch({
 
-				success: function() {
+				success : function() {
 					// data returned from the server.  render the model view
 					page.renderModelView(true);
 				},
 
-				error: function(m, r) {
-					app.appendAlert(app.getErrorMessage(r), 'alert-error',0,'modelAlert');
+				error : function(m, r) {
+					app.appendAlert(app.getErrorMessage(r), 'alert-error', 0, 'modelAlert');
 					app.hideProgress('modelLoader');
 				}
-
 			});
 		}
 
@@ -204,25 +222,25 @@ var page = {
 	 * Render the model template in the popup
 	 * @param bool show the delete button
 	 */
-	renderModelView: function(showDeleteButton)	{
+	renderModelView : function(showDeleteButton) {
 		page.modelView.render();
 
 		app.hideProgress('modelLoader');
 
 		// initialize any special controls
 		try {
-			$('.date-picker')
-				.datepicker()
-				.on('changeDate', function(ev){
-					$('.date-picker').datepicker('hide');
-				});
+			$('.date-picker').datepicker().on('changeDate', function(ev) {
+				$('.date-picker').datepicker('hide');
+			});
 		} catch (error) {
 			// this happens if the datepicker input.value isn't a valid date
-			if (console) console.log('datepicker error: '+error.message);
+			if (console)
+				console.log('datepicker error: ' + error.message);
 		}
-		
-		$('.timepicker-default').timepicker({ defaultTime: 'value' });
 
+		$('.timepicker-default').timepicker({
+			defaultTime : 'value'
+		});
 
 		if (showDeleteButton) {
 			// attach click handlers to the delete buttons
@@ -251,7 +269,7 @@ var page = {
 	/**
 	 * update the model that is currently displayed in the dialog
 	 */
-	updateModel: function() {
+	updateModel : function() {
 		// reset any previous errors
 		$('#modelAlert').html('');
 		$('.control-group').removeClass('error');
@@ -262,77 +280,124 @@ var page = {
 
 		app.showProgress('modelLoader');
 
-		page.lead.save({
+		page.customer = new model.CustomerModel();
 
-			'status': $('input#status').val(),
-			'stateId': $('input#stateId').val(),
-			'customerId': $('input#customerId').val(),
-			'accountId': $('input#accountId').val(),
-			'accountTypeId': $('input#accountTypeId').val(),
-			'createdDate': $('input#createdDate').val()+' '+$('input#createdDate-time').val(),
-			'updatedDate': $('input#updatedDate').val()+' '+$('input#updatedDate-time').val(),
-			'serviceId': $('input#serviceId').val()
+		page.user.save({
+
+			'firstname' : $('input#fname').val(),
+			'lastname' : $('input#lname').val(),
+			'branchName' : $('input#branchname').val(),
+			'phone' : $('input#phone').val(),
+			'mobile' : $('input#mobile').val(),
+			'email' : $('input#email').val(),
+			'address' : $('input#address').val(),
+			'suburb' : $('input#suburb').val(),
+			'postcode' : $('input#postcode').val(),
+			'state' : $('input#state').val(),
+			'city' : $('input#city').val(),
 		}, {
-			wait: true,
-			success: function(){
-				$('#leadDetailDialog').modal('hide');
-				setTimeout("app.appendAlert('Lead was sucessfully " + (isNew ? "inserted" : "updated") + "','alert-success',3000,'collectionAlert')",500);
+			wait : true,
+			success : function() {
+
+				//start adding lead after successfully created a customer
+				page.lead.save({
+
+					'status' : $('input#status').val(),
+					'stateId' : $('input#stateId').val(),
+					'customerId' : $('input#customerId').val(),
+					'accountId' : $('input#accountId').val(),
+					'createdDate' : $('input#createdDate').val() + ' ' + $('input#createdDate-time').val(),
+					'updatedDate' : $('input#updatedDate').val() + ' ' + $('input#updatedDate-time').val(),
+					'serviceId' : $('input#serviceId').val()
+				}, {
+					wait : true,
+					success : function() {
+						$('#leadDetailDialog').modal('hide');
+						setTimeout("app.appendAlert('Lead was sucessfully " + ( isNew ? "inserted" : "updated") + "','alert-success',3000,'collectionAlert')", 500);
+						app.hideProgress('modelLoader');
+
+						// if the collection was initally new then we need to add it to the collection now
+						if (isNew) {
+							page.leads.add(page.lead);
+						}
+
+						if (model.reloadCollectionOnModelUpdate) {
+							// re-fetch and render the collection after the model has been updated
+							page.fetchLeads(page.fetchParams, true);
+						}
+					},
+					error : function(model, response, scope) {
+
+						app.hideProgress('modelLoader');
+
+						app.appendAlert(app.getErrorMessage(response), 'alert-error', 0, 'modelAlert');
+
+						try {
+							var json = $.parseJSON(response.responseText);
+
+							if (json.errors) {
+								$.each(json.errors, function(key, value) {
+									$('#' + key + 'InputContainer').addClass('error');
+									$('#' + key + 'InputContainer span.help-inline').html(value);
+									$('#' + key + 'InputContainer span.help-inline').show();
+								});
+							}
+						} catch (e2) {
+							if (console)
+								console.log('error parsing server response: ' + e2.message);
+						}
+					}
+				});
+
+			},
+			error : function(model, response, scope) {
+
 				app.hideProgress('modelLoader');
 
-				// if the collection was initally new then we need to add it to the collection now
-				if (isNew) { page.leads.add(page.lead) }
-
-				if (model.reloadCollectionOnModelUpdate) {
-					// re-fetch and render the collection after the model has been updated
-					page.fetchLeads(page.fetchParams,true);
-				}
-		},
-			error: function(model,response,scope){
-
-				app.hideProgress('modelLoader');
-
-				app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
+				app.appendAlert(app.getErrorMessage(response), 'alert-error', 0, 'modelAlert');
 
 				try {
 					var json = $.parseJSON(response.responseText);
 
 					if (json.errors) {
 						$.each(json.errors, function(key, value) {
-							$('#'+key+'InputContainer').addClass('error');
-							$('#'+key+'InputContainer span.help-inline').html(value);
-							$('#'+key+'InputContainer span.help-inline').show();
+							$('#' + key + 'InputContainer').addClass('error');
+							$('#' + key + 'InputContainer span.help-inline').html(value);
+							$('#' + key + 'InputContainer span.help-inline').show();
 						});
 					}
 				} catch (e2) {
-					if (console) console.log('error parsing server response: '+e2.message);
+					if (console)
+						console.log('error parsing server response: ' + e2.message);
 				}
 			}
 		});
+
 	},
 
 	/**
 	 * delete the model that is currently displayed in the dialog
 	 */
-	deleteModel: function()	{
+	deleteModel : function() {
 		// reset any previous errors
 		$('#modelAlert').html('');
 
 		app.showProgress('modelLoader');
 
 		page.lead.destroy({
-			wait: true,
-			success: function(){
+			wait : true,
+			success : function() {
 				$('#leadDetailDialog').modal('hide');
-				setTimeout("app.appendAlert('The Lead record was deleted','alert-success',3000,'collectionAlert')",500);
+				setTimeout("app.appendAlert('The Lead record was deleted','alert-success',3000,'collectionAlert')", 500);
 				app.hideProgress('modelLoader');
 
 				if (model.reloadCollectionOnModelUpdate) {
 					// re-fetch and render the collection after the model has been updated
-					page.fetchLeads(page.fetchParams,true);
+					page.fetchLeads(page.fetchParams, true);
 				}
 			},
-			error: function(model,response,scope) {
-				app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
+			error : function(model, response, scope) {
+				app.appendAlert(app.getErrorMessage(response), 'alert-error', 0, 'modelAlert');
 				app.hideProgress('modelLoader');
 			}
 		});

@@ -81,7 +81,7 @@ class SecureExampleController extends AppBaseController
 		{
 			// login success
 			$this->SetCurrentUser($user);
-			$this->Redirect('SecureExample.UserPage');
+			$this->Redirect('Default.Home');
 		}
 		else
 		{

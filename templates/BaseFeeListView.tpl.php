@@ -144,7 +144,7 @@
 	</script>
 
 	<!-- modal edit dialog -->
-	<div class="modal hide fade" id="baseFeeDetailDialog">
+	<div class="modal fade" id="baseFeeDetailDialog">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">&times;</a>
 			<h3>

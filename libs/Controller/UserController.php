@@ -4,7 +4,6 @@
 /** import supporting libraries */
 require_once("AppBaseController.php");
 require_once("Model/User.php");
-
 /**
  * UserController is the controller class for the User object.  The
  * controller is responsible for processing input from the user, reading/updating

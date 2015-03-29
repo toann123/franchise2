@@ -306,11 +306,25 @@ var page = {
 
 		page.user.save({
 
-			'roleId': $('select#roleId').val(),
-			'username': $('input#username').val(),
-			'password': $('input#password').val(),
-			'firstName': $('input#firstName').val(),
-			'lastName': $('input#lastName').val()
+			'code': $('input#code').val(),
+			'RoleId': $('select#RoleId').val(),
+			'Username': $('input#Username').val(),
+			'Password': $('input#Password').val(),
+			'FirstName': $('input#FirstName').val(),
+			'LastName': $('input#LastName').val(),
+			'accountTypeId': $('input#accountTypeId').val(),
+			'companyId': $('input#companyId').val(),
+			'email': $('input#email').val(),
+			'phone': $('input#phone').val(),
+			'mobile': $('input#mobile').val(),
+			'address': $('input#address').val(),
+			'surburb': $('input#surburb').val(),
+			'postcode': $('input#postcode').val(),
+			'state': $('input#state').val(),
+			'city': $('input#city').val(),
+			'createdDate': $('input#createdDate').val()+' '+$('input#createdDate-time').val(),
+			'updatedDate': $('input#updatedDate').val()+' '+$('input#updatedDate-time').val(),
+			'status': $('input#status').val()
 		}, {
 			wait: true,
 			success: function(){

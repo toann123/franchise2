@@ -36,8 +36,6 @@ class LeadDAO extends Phreezable
 	/** @var int */
 	public $AccountId;
 
-	/** @var int */
-	public $AccountTypeId;
 
 	/** @var timestamp */
 	public $CreatedDate;
@@ -47,8 +45,5 @@ class LeadDAO extends Phreezable
 
 	/** @var int */
 	public $ServiceId;
-
-
-
 }
 ?>

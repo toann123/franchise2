@@ -151,6 +151,9 @@ GlobalConfig::$ROUTE_MAP = array(
 	'GET:api/lead/(:num)' => array('route' => 'Lead.Read', 'params' => array('id' => 2)),
 	'PUT:api/lead/(:num)' => array('route' => 'Lead.Update', 'params' => array('id' => 2)),
 	'DELETE:api/lead/(:num)' => array('route' => 'Lead.Delete', 'params' => array('id' => 2)),
+	
+	// add Lead
+	'GET:addleads' => array('route' => 'Lead.AddListView'),
 		
 	// Post
 	'GET:posts' => array('route' => 'Post.ListView'),

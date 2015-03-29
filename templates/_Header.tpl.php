@@ -1,3 +1,9 @@
+<?php
+	if(!isset($_SESSION["roleid"])){
+		$_SESSION["roleid"] = $this->CURRENT_USER->RoleId;
+		$_SESSION["userid"] = $this->eprint($this->CURRENT_USER->Id);
+	}
+?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -34,7 +40,8 @@
 
 		<script type="text/javascript" src="scripts/libs/LAB.min.js"></script>
 		<script type="text/javascript">
-			$LAB.script("//code.jquery.com/jquery-1.8.2.min.js").wait()
+			$LAB.script("bootstrap/jquery-1.9.1.min.js").wait()
+				
 				.script("bootstrap/js/bootstrap.min.js")
 				.script("bootstrap/js/bootstrap-datepicker.js")
 				.script("bootstrap/js/bootstrap-timepicker.js")
@@ -52,38 +59,12 @@
     <link href="css/stylesheets.css" rel="stylesheet" type="text/css" />
     <link rel='stylesheet' type='text/css' href='css/fullcalendar.print.css' media='print' />
     
-    <script type='text/javascript' src='js/jquery.min.js'></script>
-    <script type='text/javascript' src='js/jquery-ui.min.js'></script>
-    <script type='text/javascript' src='js/plugins/jquery/jquery.mousewheel.min.js'></script>
-    <script type='text/javascript' src='js/plugins/cookie/jquery.cookies.2.2.0.min.js'></script>
-    <script type='text/javascript' src='js/plugins/bootstrap.min.js'></script>
-    <script type='text/javascript' src='js/plugins/charts/excanvas.min.js'></script>
-    <script type='text/javascript' src='js/plugins/charts/jquery.flot.js'></script>    
-    <script type='text/javascript' src='js/plugins/charts/jquery.flot.stack.js'></script>    
-    <script type='text/javascript' src='js/plugins/charts/jquery.flot.pie.js'></script>
-    <script type='text/javascript' src='js/plugins/charts/jquery.flot.resize.js'></script>
-    <script type='text/javascript' src='js/plugins/sparklines/jquery.sparkline.min.js'></script>
-    <script type='text/javascript' src='js/plugins/fullcalendar/fullcalendar.min.js'></script>
-    <script type='text/javascript' src='js/plugins/select2/select2.min.js'></script>
-    <script type='text/javascript' src='js/plugins/uniform/uniform.js'></script>
-    <script type='text/javascript' src='js/plugins/maskedinput/jquery.maskedinput-1.3.min.js'></script>
-    <script type='text/javascript' src='js/plugins/validation/languages/jquery.validationEngine-en.js' charset='utf-8'></script>
-    <script type='text/javascript' src='js/plugins/validation/jquery.validationEngine.js' charset='utf-8'></script>
-    <script type='text/javascript' src='js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js'></script>
-    <script type='text/javascript' src='js/plugins/animatedprogressbar/animated_progressbar.js'></script>
-    <script type='text/javascript' src='js/plugins/qtip/jquery.qtip-1.0.0-rc3.min.js'></script>
-    <script type='text/javascript' src='js/plugins/cleditor/jquery.cleditor.js'></script>
-    <script type='text/javascript' src='js/plugins/dataTables/jquery.dataTables.min.js'></script>    
-    <script type='text/javascript' src='js/plugins/fancybox/jquery.fancybox.pack.js'></script>
-    <script type='text/javascript' src='js/cookies.js'></script>
-    <script type='text/javascript' src='js/actions.js'></script>
-    <script type='text/javascript' src='js/charts.js'></script>
-    <script type='text/javascript' src='js/plugins.js'></script>
-
+ 	<!-- general css -->
+   <link href="css/general.css" rel="stylesheet" />
+    
 	</head>
 
 	<body>
-
 			<div class="navbar navbar-inverse navbar-fixed-top">
 				<div class="navbar-inner">
 					<div class="container">
@@ -93,7 +74,8 @@
 							<span class="icon-bar"></span>
 						</a>
 						<a class="brand" href="./">FRANCHISE</a>
-						<div class="nav-collapse collapse">
+						<div class="nav-collapse collapse in">
+							<?php if($this->CURRENT_USER->RoleId == 4 && $this->CURRENT_USER->RoleId != ""){?>
 							<ul class="nav">
 								<li <?php if ($this->nav=='accounts') { echo 'class="active"'; } ?>><a href="./accounts">Accounts</a></li>
 								<li <?php if ($this->nav=='accountmonths') { echo 'class="active"'; } ?>><a href="./accountmonths">AccountMonths</a></li>
@@ -118,6 +100,7 @@
 								</ul>
 								</li>
 							</ul>
+							<?php }?>
 							<?php  if ($this->CURRENT_USER) { ?>
 							<ul class="nav pull-right">
 								<li class="dropdown">
@@ -149,19 +132,14 @@
 			</div>
 
 			<div class="header">
-    <h4 style="color:white;margin-top: 9px;margin-left: 10px;">Franchise</h4>
+    <h4 class="pull-right" style="color:white;margin-top: 9px;margin-right: 10px;"><?php echo $this->title;?></h4>
     <ul class="header_menu">
         <li class="list_icon">
             <a href="#">&nbsp;</a>
         </li>
     </ul>
 </div><div class="menu">
-    <div class="breadLine">
-        <div class="arrow"></div>
-        <div class="adminControl active">
-            Hi, Jim's Online
-        </div>
-    </div>
+    
     <div class="admin">
         <div class="image">
             <img src="img/users/aqvatarius.jpg" class="img-polaroid"/>
@@ -184,7 +162,7 @@
 			<a href="#"> <span class="isw-grid"></span><span class="text">Information</span></a>
             <ul>
                 <li>
-                    <a href="addinformation.php"> <span class="icon-th"></span><span class="text">View</span> </a>
+                    <a href="/franchise2/"> <span class="icon-th"></span><span class="text">View</span> </a>
                 </li>
                 <li>
                     <a href="editinformation.php"> <span class="icon-th-large"></span><span class="text">Edit</span> </a>
@@ -201,10 +179,10 @@
                     <a href="receive.php"> <span class="icon-th"></span><span class="text">Receive</span> </a>
                 </li>
                 <li>
-                    <a href="addpick.php"> <span class="icon-th"></span><span class="text">Add</span> </a>
+                    <a href="/franchise2/addleads"> <span class="icon-th"></span><span class="text">Add</span> </a>
                 </li>
                 <li>
-                    <a href="statistic.php"> <span class="icon-th-large"></span><span class="text">List</span> </a>
+                    <a href="/franchise2/leads"> <span class="icon-th-large"></span><span class="text">List</span> </a>
                 </li>
             </ul>
         </li>
@@ -227,18 +205,7 @@
                     <a href="editcustomer.php"> <span class="icon-th-large"></span><span class="text">List</span> </a>
                 </li>
             </ul>
-        </li>
-		<li class="openable">
-            <a href="#"> <span class="isw-list"></span><span class="text">User</span> </a>
-            <ul>
-                <li>
-                    <a href="adduser.php"> <span class="icon-th"></span><span class="text">Add</span> </a>
-                </li>
-                <li>
-                    <a href="listuser.php"> <span class="icon-th-large"></span><span class="text">List</span> </a>
-                </li>
-            </ul>
-        </li>
+        </li>		
     </ul>
     <div class="dr">
         <span></span>

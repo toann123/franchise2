@@ -131,7 +131,7 @@
 	</script>
 
 	<!-- modal edit dialog -->
-	<div class="modal hide fade" id="accountTypeDetailDialog">
+	<div class="modal fade" id="accountTypeDetailDialog">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">&times;</a>
 			<h3>

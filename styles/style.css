@@ -96,3 +96,11 @@ span.help-inline {
 span.help-inline:empty {
 	display: none;
 }
+
+.no-padding{
+	padding:0px
+}
+
+.no-margin{
+	margin:0px
+}

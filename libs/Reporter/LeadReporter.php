@@ -27,7 +27,6 @@ class LeadReporter extends Reporter
 	public $StateId;
 	public $CustomerId;
 	public $AccountId;
-	public $AccountTypeId;
 	public $CreatedDate;
 	public $UpdatedDate;
 	public $ServiceId;
@@ -49,7 +48,6 @@ class LeadReporter extends Reporter
 			,`lead`.`state_id` as StateId
 			,`lead`.`customer_id` as CustomerId
 			,`lead`.`account_id` as AccountId
-			,`lead`.`account_type_id` as AccountTypeId
 			,`lead`.`created_date` as CreatedDate
 			,`lead`.`updated_date` as UpdatedDate
 			,`lead`.`service_id` as ServiceId

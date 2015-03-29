@@ -4,7 +4,9 @@
 /** import supporting libraries */
 require_once("AppBaseController.php");
 require_once("Model/Lead.php");
-
+require_once("Model/User.php");
+require_once("Model/Service.php");
+require_once("Model/State.php");
 /**
  * LeadController is the controller class for the Lead object.  The
  * controller is responsible for processing input from the user, reading/updating
@@ -38,6 +40,30 @@ class LeadController extends AppBaseController
 	public function ListView()
 	{
 		$this->Render();
+	}
+	
+	public function AddListView()
+	{
+		//get service code list
+		try {
+			$criteria = new ServiceCriteria();
+			
+			//get state obj
+			$state = $this -> Phreezer -> Query('StateReporter', $criteria);
+			$state = $state->ToObjectArray(true, $this->SimpleObjectParams());
+			$this -> Assign("stateinfo", $state);
+			
+			//get service obj			
+			$service = $this -> Phreezer -> Query('ServiceReporter', $criteria);
+			$service = $service->ToObjectArray(true, $this->SimpleObjectParams());
+			$this -> Assign("serviceinfo", $service);
+			// $this->RenderJSON($company, $this->JSONPCallback(), true, $this->SimpleObjectParams());			
+			
+		} catch (Exception $ex) {
+			$this -> RenderExceptionJSON($ex);
+		}		
+		
+		$this->Render("AddLeadListView.tpl");
 	}
 
 	/**
@@ -145,7 +171,10 @@ class LeadController extends AppBaseController
 			{
 				throw new Exception('The request body does not contain valid JSON');
 			}
+			
+			//add user first
 
+			//add lead second
 			$lead = new Lead($this->Phreezer);
 
 			// TODO: any fields that should not be inserted by the user should be commented out
@@ -164,6 +193,8 @@ class LeadController extends AppBaseController
 
 			$lead->Validate();
 			$errors = $lead->GetValidationErrors();
+			
+			//add service id
 
 			if (count($errors) > 0)
 			{

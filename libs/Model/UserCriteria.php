@@ -47,16 +47,18 @@ class UserCriteria extends UserCriteriaDAO
 	 *
 	 * @see Criteria::OnPrepare()
 	 */
-	/*
+	
 	function OnPrepare()
 	{
-		if ($this->MyCustomField == "special value")
-		{
-			// _where must begin with "where"
-			$this->_where = "where db_field ....";
-		}
+		// if ($this->MyCustomField == "special value")
+		// {
+			// // _where must begin with "where"
+			// $this->_where = "where db_field ....";
+		// }
+		// _where must begin with "where"
+				
 	}
-	*/
+	
 
 }
 ?>

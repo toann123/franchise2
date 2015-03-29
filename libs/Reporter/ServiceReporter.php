@@ -41,8 +41,7 @@ class ServiceReporter extends Reporter
 	static function GetCustomQuery($criteria)
 	{
 		$sql = "select
-			'custom value here...' as CustomFieldExample
-			,`service`.`id` as Id
+			`service`.`id` as Id
 			,`service`.`name` as Name
 			,`service`.`code` as Code
 			,`service`.`description` as Description

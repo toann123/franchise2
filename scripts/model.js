@@ -542,7 +542,6 @@ model.LeadModel = Backbone.Model.extend({
 	stateId: '',
 	customerId: '',
 	accountId: '',
-	accountTypeId: '',
 	createdDate: '',
 	updatedDate: '',
 	serviceId: '',
@@ -552,7 +551,6 @@ model.LeadModel = Backbone.Model.extend({
 		'stateId': '',
 		'customerId': '',
 		'accountId': '',
-		'accountTypeId': '',
 		'createdDate': '',
 		'updatedDate': '',
 		'serviceId': ''
@@ -629,6 +627,36 @@ model.ReceiveModel = Backbone.Model.extend({
 model.ReceiveCollection = model.AbstractCollection.extend({
 	url: 'api/receives',
 	model: model.ReceiveModel
+});
+
+/**
+ * Role Backbone Model
+ */
+model.RoleModel = Backbone.Model.extend({
+	urlRoot: 'api/role',
+	idAttribute: 'id',
+	id: '',
+	name: '',
+	canAdmin: '',
+	canEdit: '',
+	canWrite: '',
+	canRead: '',
+	defaults: {
+		'id': null,
+		'name': '',
+		'canAdmin': '',
+		'canEdit': '',
+		'canWrite': '',
+		'canRead': ''
+	}
+});
+
+/**
+ * Role Backbone Collection
+ */
+model.RoleCollection = model.AbstractCollection.extend({
+	url: 'api/roles',
+	model: model.RoleModel
 });
 
 /**
@@ -776,21 +804,47 @@ model.SupportCollection = model.AbstractCollection.extend({
  */
 model.UserModel = Backbone.Model.extend({
 	urlRoot: 'api/user',
-	idAttribute: 'id',
-	id: '',
-	firstname: '',
-	lastname: '',
+	idAttribute: 'Id',
+	Id: '',
+	code: '',
+	RoleId: '',
+	Username: '',
+	Password: '',
+	FirstName: '',
+	LastName: '',
+	accountTypeId: '',
+	companyId: '',
 	email: '',
 	phone: '',
 	mobile: '',
+	address: '',
+	surburb: '',
+	postcode: '',
+	state: '',
+	city: '',
+	createdDate: '',
+	updatedDate: '',
 	status: '',
 	defaults: {
-		'id': null,
-		'firstname': '',
-		'lastname': '',
+		'Id': null,
+		'code': '',
+		'RoleId': '',
+		'Username': '',
+		'Password': '',
+		'FirstName': '',
+		'LastName': '',
+		'accountTypeId': '',
+		'companyId': '',
 		'email': '',
 		'phone': '',
 		'mobile': '',
+		'address': '',
+		'surburb': '',
+		'postcode': '',
+		'state': '',
+		'city': '',
+		'createdDate': '',
+		'updatedDate': '',
 		'status': ''
 	}
 });

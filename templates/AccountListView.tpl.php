@@ -3,6 +3,10 @@
 	$this->assign('nav','accounts');
 
 	$this->display('_Header.tpl.php');
+	if($this->CURRENT_USER->RoleId != 4 && $this->CURRENT_USER->RoleId != ""){
+		echo "<script>window.location = '$this->ROOT_URL/loginform';</script>";
+	} 
+	
 ?>
 
 <script type="text/javascript">
@@ -243,7 +247,7 @@
 	</script>
 
 	<!-- modal edit dialog -->
-	<div class="modal hide fade" id="accountDetailDialog">
+	<div class="modal fade" id="accountDetailDialog">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">&times;</a>
 			<h3>

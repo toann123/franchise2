@@ -56,7 +56,6 @@ class LeadMap implements IDaoMap, IDaoMap2
 			self::$FM["StateId"] = new FieldMap("StateId","lead","state_id",false,FM_TYPE_INT,20,null,false);
 			self::$FM["CustomerId"] = new FieldMap("CustomerId","lead","customer_id",false,FM_TYPE_INT,20,null,false);
 			self::$FM["AccountId"] = new FieldMap("AccountId","lead","account_id",false,FM_TYPE_INT,20,null,false);
-			self::$FM["AccountTypeId"] = new FieldMap("AccountTypeId","lead","account_type_id",false,FM_TYPE_INT,20,null,false);
 			self::$FM["CreatedDate"] = new FieldMap("CreatedDate","lead","created_date",false,FM_TYPE_TIMESTAMP,null,"CURRENT_TIMESTAMP",false);
 			self::$FM["UpdatedDate"] = new FieldMap("UpdatedDate","lead","updated_date",false,FM_TYPE_TIMESTAMP,null,"0000-00-00 00:00:00",false);
 			self::$FM["ServiceId"] = new FieldMap("ServiceId","lead","service_id",false,FM_TYPE_INT,20,null,false);
